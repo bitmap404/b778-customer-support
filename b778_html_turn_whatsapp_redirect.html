@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Redirecting...</title>
+</head>
+<body>
+  <script>
+    /*
+      HTML-ONLY TURN-BASED WHATSAPP REDIRECT
+
+      IMPORTANT:
+      This alternates per browser/device using localStorage.
+      It cannot keep one shared global turn across all customers.
+
+      Example on the same device:
+      Visit 1 -> Support 1
+      Visit 2 -> Support 2
+      Visit 3 -> Support 1
+      Visit 4 -> Support 2
+    */
+
+    const SUPPORT_NUMBERS = [
+      "601121794247", // Cindy - replace this
+      "601121794382"  // Mika - replace this
+    ];
+
+    // Optional pre-filled message.
+    // Use "" if you do not want a message.
+    const PRE_FILLED_MESSAGE = "";
+
+    const STORAGE_KEY = "b778_support_turn";
+
+    let currentTurn = parseInt(localStorage.getItem(STORAGE_KEY), 10);
+
+    if (isNaN(currentTurn)) {
+      currentTurn = 0;
+    }
+
+    const selectedIndex = currentTurn % SUPPORT_NUMBERS.length;
+    const selectedNumber = SUPPORT_NUMBERS[selectedIndex];
+
+    // Save next turn before redirecting.
+    localStorage.setItem(STORAGE_KEY, String(currentTurn + 1));
+
+    let whatsappUrl = "https://wa.me/" + selectedNumber;
+
+    if (PRE_FILLED_MESSAGE) {
+      whatsappUrl += "?text=" + encodeURIComponent(PRE_FILLED_MESSAGE);
+    }
+
+    // Immediate redirect.
+    window.location.replace(whatsappUrl);
+  </script>
+</body>
+</html>
